@@ -1,0 +1,32 @@
+More understanding of the plink file 
+PLINK accepts VCF files as input, but the preferred format to work with in PLINK are the PLINK text files with endings .ped (and .map), and the smaller binary PLINK files with endings .bed (+ .bim + .fam). Do not confuse this .bed with the UCSC Genome Browser’s BED format, which is totally different. In PLINK, the input data file is split in 2 (or 3) files, each containing solely information on either genotypes and sample information (.ped), only genotypes (.bed), variant positions and information (.map / .bim), or sample information (.fam).
+
+less -S data.noIND04.miss0.5.noMT.thin10.ped
+
+IND01 IND01 0 0 0 0 C C 0 0
+IND02 IND02 0 0 0 0 0 0 0 0
+IND03 IND03 0 0 0 0 0 0 A G
+IND05 IND05 0 0 0 0 C C A A
+AFR01 AFR01 0 0 0 0 C T A G
+AFR02 AFR02 0 0 0 0 C C A G
+AFR03 AFR03 0 0 0 0 0 0 A G
+AFR04 AFR04 0 0 0 0 0 0 0 0
+AFR05 AFR05 0 0 0 0 C C A G … 
+less data.noIND04.miss0.5.noMT.thin10.map
+
+scf7180003948298 scf7180003948298:263 0 263
+scf7180003948298 scf7180003948298:313 0 313
+scf7180003948298 scf7180003948298:1268 0 1268
+The .ped file contains the variant information with one allele per column (meaning 2 columns are needed for the two alleles of one variant). It has one line per sample with the first six columns being:
+1 Family ID
+2 Within-family ID (‘IID’; cannot be ‘0’)
+3 Within-family ID of father (‘0’ if missing)
+4 Within-family ID of mother (‘0’ if missing)
+5 Sex code (‘1’ = male, ‘2’ = female, ‘0’ = unknown)
+6 Phenotype value (‘1’ = control, ‘2’ = case, ‘-9’/’0’/non-numeric = missing data)
+7-n The seventh and eighth columns are the alleles for the first variant, the second variant, etc. Missing data is coded as 0 (or -9).
+The .map file contains the variant positions. It has 4 columns:
+1 Chromosome code. PLINK 1.9 also permits contig or scaffold names here, but most older versions do not.
+2 Variant identifier
+3 Position in morgans or centimorgans (optional; ‘0’ = unknown)
+4 Chromosome position in bp
